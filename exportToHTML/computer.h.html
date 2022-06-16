@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>computer.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bbb529;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #cc7832;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+computer.h</font>
+</center></td></tr></table>
+<pre><span class="s0">#ifndef </span><span class="s1">STRAIGHTS_COMPUTER_H</span>
+<span class="s0">#define </span><span class="s1">STRAIGHTS_COMPUTER_H</span>
+<span class="s0">#include </span><span class="s2">&quot;player.h&quot;</span>
+
+
+<span class="s3">class </span><span class="s1">Computer:</span><span class="s3">public </span><span class="s1">Player {</span>
+<span class="s3">public</span><span class="s1">:</span>
+    <span class="s3">explicit </span><span class="s1">Computer(std::string name)</span><span class="s3">;</span>
+    <span class="s1">Computer(std::string name</span><span class="s3">, </span><span class="s1">std::vector&lt;std::unique_ptr&lt;Card&gt;&gt; hand</span><span class="s3">, </span><span class="s1">std::vector&lt;std::unique_ptr&lt;Card&gt;&gt; discards</span><span class="s3">,</span>
+             <span class="s3">int </span><span class="s1">score</span><span class="s3">, bool </span><span class="s1">starter)</span><span class="s3">;</span>
+    <span class="s3">void </span><span class="s1">makeMove(Table &amp;x) override</span><span class="s3">;</span>
+    <span class="s1">~Computer() override</span><span class="s3">;</span>
+
+<span class="s1">}</span><span class="s3">;</span>
+
+
+<span class="s0">#endif </span><span class="s4">//STRAIGHTS_COMPUTER_H</span>
+</pre>
+</body>
+</html>

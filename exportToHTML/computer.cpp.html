@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>computer.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.s1 { color: #bbb529;}
+.s2 { color: #6a8759;}
+.s3 { color: #cc7832;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+computer.cpp</font>
+</center></td></tr></table>
+<pre>
+<span class="s1">#include </span><span class="s2">&quot;computer.h&quot;</span>
+<span class="s1">#include </span><span class="s2">&lt;utility&gt;</span>
+
+<span class="s0">Computer::Computer(std::string name){</span>
+    <span class="s3">this</span><span class="s0">-&gt;score=</span><span class="s4">0</span><span class="s3">;</span>
+    <span class="s3">this</span><span class="s0">-&gt;starter=</span><span class="s3">false;</span>
+    <span class="s3">this</span><span class="s0">-&gt;name=std::move(name)</span><span class="s3">;</span>
+    <span class="s3">this</span><span class="s0">-&gt;type=</span><span class="s2">&quot;c&quot;</span><span class="s3">;</span>
+<span class="s0">}</span>
+<span class="s0">Computer::Computer(std::string name</span><span class="s3">,</span><span class="s0">std::vector&lt;std::unique_ptr&lt;Card&gt;&gt; hand</span><span class="s3">,</span><span class="s0">std::vector&lt;std::unique_ptr&lt;Card&gt;&gt; discards</span><span class="s3">,int </span><span class="s0">score</span><span class="s3">, bool </span><span class="s0">starter){</span>
+    <span class="s3">this</span><span class="s0">-&gt;type=</span><span class="s2">&quot;c&quot;</span><span class="s3">;</span>
+    <span class="s3">this</span><span class="s0">-&gt;name=std::move(name)</span><span class="s3">;</span>
+    <span class="s3">this</span><span class="s0">-&gt;discards=std::move(discards)</span><span class="s3">;</span>
+    <span class="s3">this</span><span class="s0">-&gt;hand=std::move(hand)</span><span class="s3">;</span>
+    <span class="s3">this</span><span class="s0">-&gt;score=score</span><span class="s3">;</span>
+    <span class="s3">this</span><span class="s0">-&gt;starter=starter</span><span class="s3">;</span>
+<span class="s0">}</span>
+
+<span class="s3">void </span><span class="s0">Computer::makeMove(Table &amp;x) {</span>
+    <span class="s0">std::vector&lt;std::string&gt; legalCards = legalPlays(x)</span><span class="s3">;</span>
+    <span class="s3">if</span><span class="s0">(!legalCards.empty()){</span>
+        <span class="s3">int </span><span class="s0">n=</span><span class="s4">0</span><span class="s3">;</span>
+        <span class="s3">for </span><span class="s0">(</span><span class="s3">auto </span><span class="s0">&amp;i : hand) {</span>
+            <span class="s3">if </span><span class="s0">(i-&gt;printCard() == legalCards[</span><span class="s4">0</span><span class="s0">]) {</span>
+                <span class="s0">play(std::move(i)</span><span class="s3">, </span><span class="s0">x)</span><span class="s3">;</span>
+                <span class="s0">hand.erase(hand.begin() + n)</span><span class="s3">;</span>
+                <span class="s3">break;</span>
+            <span class="s0">}</span>
+            <span class="s0">n++</span><span class="s3">;</span>
+        <span class="s0">}</span>
+    <span class="s0">}</span><span class="s3">else</span><span class="s0">{</span>
+        <span class="s0">discard(std::move(hand[</span><span class="s4">0</span><span class="s0">]))</span><span class="s3">;</span>
+        <span class="s0">hand.erase(hand.begin())</span><span class="s3">;</span>
+    <span class="s0">}</span>
+<span class="s0">}</span>
+
+<span class="s0">Computer::~Computer() = </span><span class="s3">default;</span>
+
+
+
+
+
+
+
+</pre>
+</body>
+</html>

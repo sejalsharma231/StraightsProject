@@ -1,0 +1,169 @@
+<html>
+<head>
+<title>game.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.s1 { color: #bbb529;}
+.s2 { color: #6a8759;}
+.s3 { color: #cc7832;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+game.cpp</font>
+</center></td></tr></table>
+<pre>
+<span class="s1">#include </span><span class="s2">&quot;game.h&quot;</span>
+<span class="s1">#include </span><span class="s2">&quot;deck.h&quot;</span>
+<span class="s1">#include </span><span class="s2">&quot;player.h&quot;</span>
+<span class="s1">#include </span><span class="s2">&quot;table.h&quot;</span>
+<span class="s1">#include </span><span class="s2">&quot;computer.h&quot;</span>
+
+<span class="s0">Game::Game(Player *p1</span><span class="s3">, </span><span class="s0">Player *p2</span><span class="s3">, </span><span class="s0">Player *p3</span><span class="s3">, </span><span class="s0">Player *p4</span><span class="s3">, int </span><span class="s0">seed): p1{p1}</span><span class="s3">,</span><span class="s0">p2{p2}</span><span class="s3">,</span><span class="s0">p3{p3}</span><span class="s3">,</span><span class="s0">p4{p4}{</span>
+    <span class="s3">this</span><span class="s0">-&gt;deck= </span><span class="s3">new </span><span class="s0">Deck(seed)</span><span class="s3">;</span>
+    <span class="s3">this</span><span class="s0">-&gt;table= </span><span class="s3">new </span><span class="s0">Table()</span><span class="s3">;</span>
+<span class="s0">}</span>
+
+<span class="s3">void </span><span class="s0">Game::newRound() {</span>
+    <span class="s0">deck-&gt;shuffle()</span><span class="s3">;</span>
+    <span class="s0">p1-&gt;newRound()</span><span class="s3">;</span>
+    <span class="s0">p2-&gt;newRound()</span><span class="s3">;</span>
+    <span class="s0">p3-&gt;newRound()</span><span class="s3">;</span>
+    <span class="s0">p4-&gt;newRound()</span><span class="s3">;</span>
+    <span class="s0">table-&gt;emptyTable()</span><span class="s3">;</span>
+    <span class="s3">for </span><span class="s0">(</span><span class="s3">int </span><span class="s0">i = </span><span class="s4">0</span><span class="s3">; </span><span class="s0">i &lt; </span><span class="s4">52</span><span class="s3">; </span><span class="s0">i++) {</span>
+        <span class="s3">auto </span><span class="s0">s = std::make_unique&lt;Card&gt;(deck-&gt;getCard(i))</span><span class="s3">;</span>
+
+        <span class="s3">if </span><span class="s0">(i &lt; </span><span class="s4">13</span><span class="s0">) {</span>
+            <span class="s3">if </span><span class="s0">(s-&gt;getValue() == </span><span class="s4">7 </span><span class="s0">&amp;&amp; s-&gt;getSuit() == </span><span class="s2">'S'</span><span class="s0">) {</span>
+                <span class="s0">p1-&gt;makeStarter()</span><span class="s3">;</span>
+            <span class="s0">}</span>
+            <span class="s0">p1-&gt;addHand(std::move(s))</span><span class="s3">;</span>
+        <span class="s0">} </span><span class="s3">else if </span><span class="s0">(i &lt; </span><span class="s4">26</span><span class="s0">) {</span>
+            <span class="s3">if </span><span class="s0">(s-&gt;getValue() == </span><span class="s4">7 </span><span class="s0">&amp;&amp; s-&gt;getSuit() == </span><span class="s2">'S'</span><span class="s0">) {</span>
+                <span class="s0">p2-&gt;makeStarter()</span><span class="s3">;</span>
+            <span class="s0">}</span>
+            <span class="s0">p2-&gt;addHand(std::move(s))</span><span class="s3">;</span>
+        <span class="s0">} </span><span class="s3">else if </span><span class="s0">(i &lt; </span><span class="s4">39</span><span class="s0">) {</span>
+            <span class="s3">if </span><span class="s0">(s-&gt;getValue() == </span><span class="s4">7 </span><span class="s0">&amp;&amp; s-&gt;getSuit() == </span><span class="s2">'S'</span><span class="s0">) {</span>
+                <span class="s0">p3-&gt;makeStarter()</span><span class="s3">;</span>
+            <span class="s0">}</span>
+            <span class="s0">p3-&gt;addHand(std::move(s))</span><span class="s3">;</span>
+        <span class="s0">} </span><span class="s3">else </span><span class="s0">{</span>
+            <span class="s3">if </span><span class="s0">(s-&gt;getValue() == </span><span class="s4">7 </span><span class="s0">&amp;&amp; s-&gt;getSuit() == </span><span class="s2">'S'</span><span class="s0">) {</span>
+                <span class="s0">p4-&gt;makeStarter()</span><span class="s3">;</span>
+            <span class="s0">}</span>
+            <span class="s0">p4-&gt;addHand(std::move(s))</span><span class="s3">;</span>
+
+        <span class="s0">}</span>
+    <span class="s0">}</span>
+
+    <span class="s0">std::cout&lt;&lt;</span><span class="s2">&quot;A new round begins.&quot;</span><span class="s3">;</span>
+<span class="s0">}</span>
+
+<span class="s3">void </span><span class="s0">Game::makeMove(Player *currentPlayer) {</span>
+    <span class="s0">currentPlayer-&gt;makeMove(*table)</span><span class="s3">;</span>
+<span class="s0">}</span>
+
+<span class="s3">bool </span><span class="s0">Game::roundOver() {</span>
+    <span class="s3">if</span><span class="s0">(p1-&gt;isStarter()){</span>
+       <span class="s3">return </span><span class="s0">p4-&gt;emptyHanded()</span><span class="s3">;</span>
+    <span class="s0">}</span>
+    <span class="s3">if</span><span class="s0">(p2-&gt;isStarter()){</span>
+        <span class="s3">return </span><span class="s0">p1-&gt;emptyHanded()</span><span class="s3">;</span>
+    <span class="s0">}</span>
+    <span class="s3">if</span><span class="s0">(p3-&gt;isStarter()){</span>
+        <span class="s3">return </span><span class="s0">p2-&gt;emptyHanded()</span><span class="s3">;</span>
+    <span class="s0">}</span>
+        <span class="s3">return </span><span class="s0">p3-&gt;emptyHanded()</span><span class="s3">;</span>
+
+<span class="s0">}</span>
+
+<span class="s3">void </span><span class="s0">Game::printDeck() {</span>
+    <span class="s0">std::cout&lt;&lt;deck-&gt;printDeck()</span><span class="s3">;</span>
+<span class="s0">}</span>
+
+<span class="s3">void </span><span class="s0">Game::playInfo(Player *currentPlayer) {</span>
+    <span class="s0">table-&gt;printTable()</span><span class="s3">;</span>
+    <span class="s0">currentPlayer-&gt;printHand()</span><span class="s3">;</span>
+    <span class="s0">std::cout &lt;&lt; </span><span class="s2">&quot;Legal plays:&quot;</span><span class="s3">;</span>
+    <span class="s0">std::vector&lt;std::string&gt; legalCards = currentPlayer-&gt;legalPlays(*table)</span><span class="s3">;</span>
+    <span class="s3">for </span><span class="s0">(</span><span class="s3">auto </span><span class="s0">&amp;i: legalCards) {</span>
+        <span class="s0">std::cout &lt;&lt; </span><span class="s2">&quot; &quot; </span><span class="s0">&lt;&lt; i</span><span class="s3">;</span>
+    <span class="s0">}std::cout &lt;&lt; </span><span class="s2">&quot;</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s3">;</span>
+<span class="s0">}</span>
+
+<span class="s3">void </span><span class="s0">Game::endRound() {</span>
+    <span class="s0">p1-&gt;printDiscards()</span><span class="s3">;</span>
+    <span class="s0">p1-&gt;printNewScore()</span><span class="s3">;</span>
+    <span class="s0">p2-&gt;printDiscards()</span><span class="s3">;</span>
+    <span class="s0">p2-&gt;printNewScore()</span><span class="s3">;</span>
+    <span class="s0">p3-&gt;printDiscards()</span><span class="s3">;</span>
+    <span class="s0">p3-&gt;printNewScore()</span><span class="s3">;</span>
+    <span class="s0">p4-&gt;printDiscards()</span><span class="s3">;</span>
+    <span class="s0">p4-&gt;printNewScore()</span><span class="s3">;</span>
+<span class="s0">}</span>
+
+<span class="s3">bool </span><span class="s0">Game::gameOver() {</span>
+    <span class="s3">return</span><span class="s0">(p1-&gt;getScore()&gt;</span><span class="s4">79</span><span class="s0">||p2-&gt;getScore()&gt;</span><span class="s4">79</span><span class="s0">||p3-&gt;getScore()&gt;</span><span class="s4">79</span><span class="s0">||p4-&gt;getScore()&gt;</span><span class="s4">79</span><span class="s0">)</span><span class="s3">;</span>
+<span class="s0">}</span>
+
+<span class="s0">Player * Game::rageQuit(Player *currentPlayer) {</span>
+    <span class="s3">if</span><span class="s0">(currentPlayer-&gt;getName()==</span><span class="s2">&quot;Player1&quot;</span><span class="s0">){</span>
+        <span class="s0">p1=currentPlayer</span><span class="s3">;</span>
+        <span class="s3">return </span><span class="s0">p1</span><span class="s3">;</span>
+    <span class="s0">}</span><span class="s3">else if</span><span class="s0">(currentPlayer-&gt;getName()==</span><span class="s2">&quot;Player2&quot;</span><span class="s0">){</span>
+        <span class="s0">p2=currentPlayer</span><span class="s3">;</span>
+        <span class="s3">return </span><span class="s0">p2</span><span class="s3">;</span>
+    <span class="s0">}</span><span class="s3">else if</span><span class="s0">(currentPlayer-&gt;getName()==</span><span class="s2">&quot;Player3&quot;</span><span class="s0">){</span>
+        <span class="s0">p3=currentPlayer</span><span class="s3">;</span>
+        <span class="s3">return </span><span class="s0">p3</span><span class="s3">;</span>
+    <span class="s0">}</span><span class="s3">else</span><span class="s0">{</span>
+        <span class="s0">p4=currentPlayer</span><span class="s3">;</span>
+        <span class="s3">return </span><span class="s0">p4</span><span class="s3">;</span>
+    <span class="s0">}</span>
+
+<span class="s0">}</span>
+
+<span class="s0">Game::~Game() {</span>
+    <span class="s3">delete </span><span class="s0">p1</span><span class="s3">;</span>
+    <span class="s3">delete </span><span class="s0">p2</span><span class="s3">;</span>
+    <span class="s3">delete </span><span class="s0">p3</span><span class="s3">;</span>
+    <span class="s3">delete </span><span class="s0">p4</span><span class="s3">;</span>
+    <span class="s3">delete </span><span class="s0">deck</span><span class="s3">;</span>
+    <span class="s3">delete </span><span class="s0">table</span><span class="s3">;</span>
+<span class="s0">}</span>
+
+<span class="s3">void </span><span class="s0">Game::printWinner() {</span>
+    <span class="s3">int </span><span class="s0">lowestScore=p1-&gt;getScore()</span><span class="s3">;</span>
+    <span class="s3">if</span><span class="s0">(p2-&gt;getScore()&lt;lowestScore){</span>
+        <span class="s0">lowestScore=p2-&gt;getScore()</span><span class="s3">;</span>
+    <span class="s0">}</span>
+    <span class="s3">if</span><span class="s0">(p3-&gt;getScore()&lt;lowestScore){</span>
+        <span class="s0">lowestScore=p3-&gt;getScore()</span><span class="s3">;</span>
+    <span class="s0">}</span>
+    <span class="s3">if</span><span class="s0">(p4-&gt;getScore()&lt;lowestScore){</span>
+        <span class="s0">lowestScore=p4-&gt;getScore()</span><span class="s3">;</span>
+    <span class="s0">}</span>
+    <span class="s3">if</span><span class="s0">(lowestScore==p1-&gt;getScore()){</span>
+        <span class="s0">std::cout&lt;&lt;p1-&gt;getName()&lt;&lt;</span><span class="s2">&quot; wins!&quot;</span><span class="s0">&lt;&lt;std::endl</span><span class="s3">;</span>
+    <span class="s0">}</span>
+    <span class="s3">if</span><span class="s0">(lowestScore==p2-&gt;getScore()){</span>
+        <span class="s0">std::cout&lt;&lt;p2-&gt;getName()&lt;&lt;</span><span class="s2">&quot; wins!&quot;</span><span class="s0">&lt;&lt;std::endl</span><span class="s3">;</span>
+    <span class="s0">}</span>
+    <span class="s3">if</span><span class="s0">(lowestScore==p3-&gt;getScore()){</span>
+        <span class="s0">std::cout&lt;&lt;p3-&gt;getName()&lt;&lt;</span><span class="s2">&quot; wins!&quot;</span><span class="s0">&lt;&lt;std::endl</span><span class="s3">;</span>
+    <span class="s0">}</span>
+    <span class="s3">if</span><span class="s0">(lowestScore==p4-&gt;getScore()){</span>
+        <span class="s0">std::cout&lt;&lt;p4-&gt;getName()&lt;&lt;</span><span class="s2">&quot; wins!&quot;</span><span class="s0">&lt;&lt;std::endl</span><span class="s3">;</span>
+    <span class="s0">}</span>
+<span class="s0">}</span>
+
+
+</pre>
+</body>
+</html>
